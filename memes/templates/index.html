@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8">
+		<title>8chan</title>
+	</head>
+	<body>
+		<p style="text-align: right">
+			<a href="/log_out">Выйти из аккаунта</a>
+		</p>
+		<p>
+			<a href="/">Главная</a>
+			<br><br>
+			<a href="/add_meme">Написать пост</a>
+			<br><br>
+		</p>
+		<form method = "get" action = "/">
+			<p style="text-align: center">
+    			Поиск по заголовкам: <input name="search"/>
+    			<button>Искать</button>
+			</p>
+		</form>	
+
+		<p>
+			{% for line in memels %}
+			{{ line[3] }}, {{ line[4] }}:
+			<br>
+			{{ line[2] }}
+			<br>
+			<img width="500" src={{line[1]}}>
+			<br>
+			{% if line[4] == username %}
+			<a href="/delete_meme?id={{line[0]}}">Удалить этот пост</a>
+			<br>
+			{% endif %}
+			{% for comm in commls %}
+			{% if comm[2] == line[0] %}
+			{{ comm[3] }}:{{ comm[1] }} 
+			{% if comm[3] == username %}
+			<a href="/delete_comment?id={{comm[0]}}">Удолить</a>
+			{% endif %}
+			<br>
+			{% endif %}
+			{% endfor %}
+			<br>
+			<form method = "post" action = "/add_comment?meme_id={{line[0]}}">
+				<input name="text"/>
+				<button> Отправить </button>
+			</form>
+			{% endfor %}
+		</p>
+</body>
+</html>
